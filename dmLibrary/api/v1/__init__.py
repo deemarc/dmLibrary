@@ -2,7 +2,8 @@ import socket
 import os
 import time
 from flask import abort, Blueprint, current_app, request, url_for, jsonify
-from projectname.database import db
+from dmLibrary.database import db
+from apispec import APISpec
 
 bp = Blueprint('api', __name__)
 
@@ -98,12 +99,3 @@ def monitor():
 
         return payload, 200
 
-@bp.route('/swagger.json', methods=['GET'])
-def swagger():
-    """ Returns swagger spec JSON """
-    # Create an APISpec
-    spec = APISpec(title='Spec', version='1.0', openapi_version='3.0.2', plugins=[RestfulPlugin(),MarshmallowPlugin()])
-    
-
-    # Return formatted spec
-    return spec.to_dict()

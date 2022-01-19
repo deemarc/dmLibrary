@@ -5,8 +5,8 @@ from flask import Flask, jsonify, Response
 from flask_cors import CORS
 from flask_migrate import Migrate
 
-from projectname.config import config
-from projectname.database.models import *
+from dmLibrary.config import config
+from dmLibrary.database.models import *
 
 
 
@@ -43,14 +43,14 @@ def create_app(cfg=None):
     CORS(app)
     # api routes
 
-    from projectname.api.v1 import bp as api
+    from dmLibrary.api.v1 import bp as api
     app.register_blueprint(api, url_prefix='/api/v1')
 
     # UI routes
-    from projectname.ui import bp as ui
+    from dmLibrary.ui import bp as ui
     app.register_blueprint(ui, url_prefix='/')
 
-    from projectname.database import db, ma
+    from dmLibrary.database import db, ma
 
     # attach app to migrate object
     db.init_app(app)

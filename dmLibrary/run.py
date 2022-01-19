@@ -4,9 +4,9 @@ import code
 from flask_script import Manager
 from flask_migrate import MigrateCommand
 
-from projectname import create_app
+from dmLibrary import create_app
 
-from projectname.config import config
+from dmLibrary.config import config
 import logging
 
 
@@ -24,8 +24,8 @@ def cli():
         code.interact(local=locals())
         
 def manage():
-    from projectname import migrate
-    app = create_app(isMigrate=True)
+    from dmLibrary import migrate
+    app = create_app()
     manager = Manager(app)
     manager.add_command('db', MigrateCommand)
 

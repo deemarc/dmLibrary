@@ -4,7 +4,7 @@ import pkg_resources
 from setuptools import find_packages, setup
 
 setup(
-    name='projectname',
+    name='dmLibrary',
     version='1.0.0',
     packages=find_packages(),
     include_package_data=True,
@@ -15,9 +15,9 @@ setup(
     entry_points={
                     'console_scripts':
                     [
-                        'run-api=projectname.run:run',
-                        'run-cli=projectname.run:cli',
-                        'run-manage=projectname.run:manage'
+                        'run-api=dmLibrary.run:run',
+                        'run-cli=dmLibrary.run:cli',
+                        'run-manage=dmLibrary.run:manage'
 
                     ],
                 }

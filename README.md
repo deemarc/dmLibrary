@@ -7,15 +7,15 @@ folder template for my flask project
 
 ### 1. Installing Dependencies
 
-#### Python 3.7
+#### Python 3.8
 Install the latest version of python for your platform follow this link: [python docs](https://packaging.python.org/guides/installing-using-pip-and-vitual-environments/)
 * Remmark this project has been tested to work with python3.7
 
 #### Virtual Enviornment
 I recommend working within a virtual environment . This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the python docs
 ```
-python3.7 -m venv [path_to_desired_place]/venv/projectname
-source ./projectname/bin/activate
+python3.8 -m venv [path_to_desired_place]/venv/dmLibrary
+source ./dmLibrary/bin/activate
 ```
 
 #### PIP Dependencies
@@ -53,17 +53,17 @@ As the name state, you only need to run this when you need to create database ta
 <b>Remarks</b>: you need to run this in the directory where migration folder is located(same location as this readme)
 
 ```
-./projectname/bin/run-manage db upgrade
+./dmLibrary/bin/run-manage db upgrade
 ```
 
 ### 4. Config the service
 before running, please make sure that the configuration will work at your side. you can config the service into ways.
-- [defaults.py](./projectname/defaults.py)
+- [defaults.py](./dmLibrary/defaults.py)
 - enviroment varaible
 
 if same config happen to be in both places. then the service will use the value in enviroment varaible
 
-to understand how this service configuration works you can see this [config file](./projectname/config.py)
+to understand how this service configuration works you can see this [config file](./dmLibrary/config.py)
 
 #### Configurable Parameter
 here's  the list of configuration and there uses;
@@ -78,14 +78,14 @@ here's  the list of configuration and there uses;
 if you using the virtual enviroment everything should be ready in bin folder
 
 ```
-./projectname/bin/run-api
+./dmLibrary/bin/run-api
 ```
 
 ### Deployment process
 1. clone this git
 ```
 git clone [git_uri]
-cd [git_projectname]
+cd [git_dmLibrary]
 ```
     1.1 for production you can just use master
     1.2 for test environment please use develop branch
@@ -93,9 +93,9 @@ cd [git_projectname]
     git checkout develop
     
     ```
-2. change directory into projectname
+2. change directory into dmLibrary
 ```
-cd projectname
+cd dmLibrary
 ```
 
 3. run postgres in docker (only it's not currently run)
@@ -109,11 +109,11 @@ source docker-psql.sh
     ```
     4.2 make virtualenv
     ```
-    virtualenv "$HOME"/projectname
+    virtualenv "$HOME"/dmLibrary
     ```
     4.3 activate virtualenv
     ```
-    source "$HOME"/projectname/bin/activate
+    source "$HOME"/dmLibrary/bin/activate
     ```
     4.4 install requirement
     ```
@@ -128,7 +128,7 @@ run-manage db upgrade
 
 6. cp our supvisor run scritp into proper place
 ```
-sudo cp projectname.ini /etc/supervisord.d/
+sudo cp dmLibrary.ini /etc/supervisord.d/
 ```
 7. run the service with supervisor
 ```
