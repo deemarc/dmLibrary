@@ -27,6 +27,8 @@ def create_app(cfg=None):
     # Instantiate app object
     # app = Flask(__name__,static_folder=static_dir, template_folder=template_dir, static_url_path='')
     app = Flask(__name__)
+    app.jinja_options = {}
+    
     if cfg:
         app.config.update(cfg)
     else:

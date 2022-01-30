@@ -1,6 +1,8 @@
 import collections
 import json
 
+from attr import field
+
 from . import ma
 from .models import *
 from flask_marshmallow import Marshmallow
@@ -9,6 +11,8 @@ from dmLibrary.external.googleBook import GoogleBook
 
 # ======================== Book section ========================
 class BookSchema(ma.SQLAlchemyAutoSchema):
+    customer = fields.Nested('CustomerSchema', many=False)
+    isLent = fields.Boolean(dump_only=True)
     class Meta:
         model = Book
 
@@ -31,3 +35,23 @@ class BookSchemaPOST(ma.SQLAlchemyAutoSchema):
         data["pageCount"] = pageCount
         return data
 
+# ======================== Customer section ========================
+
+class CustomerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+
+class CustomerSchemaPOST(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+        exclude = ('id',)
+
+# ======================== LentHistory section ========================
+class LentHistorySchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = LentHistory
+
+class LentHistorySchemaPOST(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = LentHistory
+        exclude = ('id',)

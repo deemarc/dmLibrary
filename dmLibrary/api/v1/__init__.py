@@ -140,6 +140,8 @@ def route404(*args, **kwargs):
     abort(404)
 
 from dmLibrary.api.v1.resources.bookResource import *
+from dmLibrary.api.v1.resources.customerResource import *
+from dmLibrary.api.v1.resources.lentHistoryResource import *
 # Register errorhandler for specific HTTP codes
 for code in (400, 401, 403, 404, 405, 409, 410, 412, 413, 418, 429, 500, 501, 502, 503, 504, 505):
     bp.errorhandler(code)(handle_abort)

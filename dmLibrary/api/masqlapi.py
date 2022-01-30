@@ -51,6 +51,22 @@ class masqlapi():
         # Return entity
         return {'message': None, 'status_code': 200, 'status': 'success', 'data': data}
 
+    def update(self,obj):
+        """ just update the object from manual patch"""
+        # Merge and Commit
+        try:
+            current_app.logger.debug(f"obj before patch:{obj.__dict__}")
+            self.session.add(obj)
+            self.session.commit()
+            data = self.roschema().dump(obj)
+            return {'message': 'OK - entity updated successfully', 'status_code': 200, 'status': 'success', 'data': data}
+        except exc.IntegrityError as err:
+            self.session.rollback()
+            return {'message': 'Conflict', 'status_code': 409, 'status': 'failure', 'data': err.orig.__str__().strip()}
+        except Exception as err:
+            self.session.rollback()
+            raise err
+        
 
     def patch(self, obj):
         """ PATCH """
@@ -108,7 +124,7 @@ class masqlapi():
             return {'message': 'No data', 'status_code': 200, 'status': 'success', 'data': 'Entity deleted successfully'}
         except exc.IntegrityError as err:
             self.session.rollback()
-            return {'message': 'Conflict', 'status_code': 409, 'status': 'failure', 'data': err.orig.__str__().strip()}
+            return {'message': 'Conflict', 'status_code': 409, 'status': 'failure', 'data': err.orig.__str__().strip()}, 409
         except Exception as err:
             self.session.rollback()
             raise err
@@ -125,7 +141,7 @@ class masqlapi():
         # Grab request data
         json = request.get_json()
         if not json:
-            return {'message': 'Bad request', 'status_code': 400, 'status': 'failure', 'data': 'JSON input object is missing or cannot be parsed'}
+            return {'message': 'Bad request', 'status_code': 400, 'status': 'failure', 'data': 'JSON input object is missing or cannot be parsed'}, 400
         # print("json:{0}, type:{1}".format(json,type(json)))
         # Validate and deserialize input
         try:
@@ -157,10 +173,10 @@ class masqlapi():
             self.session.add(obj)
             self.session.commit()
             data = self.roschema().dump(obj)
-            return {'message': 'Created - entity created successfully', 'status_code': 201, 'status': 'success', 'data': data}
+            return {'message': 'Created - entity created successfully', 'status_code': 201, 'status': 'success', 'data': data}, 201
         except exc.IntegrityError as err:
             self.session.rollback()
-            return {'message': 'Conflict', 'status_code': 409, 'status': 'failure', 'data': err.orig.__str__().strip()}
+            return {'message': 'Conflict', 'status_code': 409, 'status': 'failure', 'data': err.orig.__str__().strip()},409
         except Exception as err:
             self.session.rollback()
             raise err
