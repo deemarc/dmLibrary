@@ -17,5 +17,13 @@ class GoogleBook(object):
         data = response.json()
         if data['totalItems'] != 1:
             return -1
-        return data['items'][0]['volumeInfo']['pageCount']
+        volumeInfo = data['items'][0].get("volumeInfo",None)
+        if not volumeInfo:
+            return -1
+        
+        pageCount = volumeInfo.get("pageCount",None)
+        if not pageCount:
+            return -1
+            
+        return pageCount
 

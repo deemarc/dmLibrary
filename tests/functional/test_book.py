@@ -1,12 +1,13 @@
 import unittest
 from dmLibrary import create_app
 from dmLibrary.external.googleBook import GoogleBook
+import time
 
 import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-class TestClass(unittest.TestCase):
+class TestBookClass(unittest.TestCase):
     def setUp(self):
         app = create_app()
         self.ctx = app.app_context()
@@ -38,6 +39,7 @@ class TestClass(unittest.TestCase):
         self.assertEqual(respData["data"]['pageCount'], 159)
         logger.info(f"respData: {respData}")
         book_id = respData["data"]["id"]
+
         # try update the title
         data = {
             "title":"test update Book"
@@ -47,9 +49,8 @@ class TestClass(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         respData = response.get_json()
         self.assertEqual(respData["data"]['title'], data['title'])
-
         # delete it
-        response = self.client.patch(f'/api/v1/books/{book_id}')
+        response = self.client.delete(f'/api/v1/books/{book_id}')
         logger.info(f"rawResp: {response.data}")
         self.assertEqual(response.status_code, 200)
 

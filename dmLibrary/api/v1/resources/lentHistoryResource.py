@@ -6,7 +6,7 @@ from dmLibrary.database import db
 from dmLibrary.database.models import LentHistory
 from dmLibrary.database.schemas import LentHistorySchema,LentHistorySchemaPOST
 from dmLibrary.api.v1 import bp
-
+from sqlalchemy import desc
 
 apiHandle = masqlapi(db.session, LentHistory ,LentHistorySchema, LentHistorySchemaPOST)
 
@@ -19,8 +19,4 @@ def get_lentHistory_resource():
         abort(400, str(errors))
     objs = apiHandle.get_many(**filters)
     return apiHandle.getMethod(objs, many=True)
-    
-@bp.route('/lentHistory/<id>', methods=['DELETE'])
-def delete_single_lentHistory_resource(id):
-    obj = apiHandle.get(id=id) or abort(404)
-    return apiHandle.delete(obj)
+

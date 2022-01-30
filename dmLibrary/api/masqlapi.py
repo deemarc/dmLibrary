@@ -50,6 +50,20 @@ class masqlapi():
        
         # Return entity
         return {'message': None, 'status_code': 200, 'status': 'success', 'data': data}
+    def add(self,obj):
+        """ add the object from manual create"""
+        # Merge and Commit
+        try:
+            self.session.add(obj)
+            self.session.commit()
+            data = self.roschema().dump(obj)
+            return {'message': 'OK - entity add successfully', 'status_code': 200, 'status': 'success', 'data': data}
+        except exc.IntegrityError as err:
+            self.session.rollback()
+            return {'message': 'Conflict', 'status_code': 409, 'status': 'failure', 'data': err.orig.__str__().strip()}
+        except Exception as err:
+            self.session.rollback()
+            raise err
 
     def update(self,obj):
         """ just update the object from manual patch"""
@@ -76,6 +90,7 @@ class masqlapi():
             return {'message': 'Bad request', 'status_code': 400, 'status': 'failure', 'data': 'JSON input object is missing or cannot be parsed'}
         
         try:
+            current_app.logger.debug(f"isObj shown:{obj}, json:{json}")
             data = self.rwschema().load(json, instance=obj, partial=True)
             # data = self.rwschema().dump(obj)
             # data_id = data.pop('id',None)

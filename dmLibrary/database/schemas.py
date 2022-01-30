@@ -23,6 +23,8 @@ class BookSchemaPOST(ma.SQLAlchemyAutoSchema):
 
     @post_load
     def get_infofromISBN(self, data, **kwags):
+        if not data.get('isbn',None):
+            return data
         if (len(data['isbn']) != 10) and (len(data['isbn']) != 13):
             raise ValidationError('ISBN must be 10 or 13 characters', 'isbn')
         if not data['isbn'].isdigit():
@@ -48,6 +50,10 @@ class CustomerSchemaPOST(ma.SQLAlchemyAutoSchema):
 
 # ======================== LentHistory section ========================
 class LentHistorySchema(ma.SQLAlchemyAutoSchema):
+    customer = fields.Nested('CustomerSchema', many=False)
+    book = fields.Nested('BookSchema', many=False)
+    book_id = fields.Integer()
+    customer_id = fields.Integer()
     class Meta:
         model = LentHistory
 

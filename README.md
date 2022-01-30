@@ -137,6 +137,22 @@ sudo supervisorctl update
 sudo supervisorctl start
 ```
 
+### test
+#### manual test
+to do manual test please import postman collection store in 'tests/dmLibrary.postman_collection.json
+
+#### run all test
+```
+python -m unittest discover
+```
+
+#### run single test
+replace 'test_lentBook' with any filename you want to do the test
+```
+python -m unittest discover -p *test_lentBook.py
+```
+
+
 
 
 

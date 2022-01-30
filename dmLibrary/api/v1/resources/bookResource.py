@@ -19,6 +19,11 @@ def get_book_resource():
         abort(400, str(errors))
     objs = apiHandle.get_many(**filters)
     return apiHandle.getMethod(objs, many=True)
+
+@bp.route('/books/<id>', methods=['GET'])
+def get_single_book_resource(id):
+    obj = apiHandle.get(id=id)
+    return apiHandle.getMethod(obj, many=False)
     
 
 @bp.route('/books', methods=['POST'])

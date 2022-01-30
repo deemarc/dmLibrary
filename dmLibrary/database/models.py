@@ -1,6 +1,7 @@
 from . import db
 import datetime
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import func
 
 
 class Book(db.Model):
@@ -35,9 +36,14 @@ class LentHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     customer_id = db.Column('customer_id',db.Integer,db.ForeignKey('customer.id',ondelete='cascade'))
     book_id = db.Column('book_id',db.Integer,db.ForeignKey('book.id',ondelete='cascade'))
-    lentDate = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    lentDate = db.Column(db.DateTime, default=datetime.datetime.utcnow())
     returnDate = db.Column(db.DateTime)
 
     book = db.relationship(Book, backref="customersLentHistory")
-    customers = db.relationship(Customer, backref="booksLentHistory")
+    customer = db.relationship(Customer, backref="booksLentHistory")
+
+    def updateReturnDate(self):
+        self.returnDate = datetime.datetime.utcnow()
+        db.session.add(self)
+        db.session.commit()
     
